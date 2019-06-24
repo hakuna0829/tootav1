@@ -1,0 +1,297 @@
+
+
+
+<div *ngIf="states">
+    <section class="banner-area relative top-panel" id="home" style="margin-top: 200px;">	
+        <div class="container">
+          <div class="row  d-flex align-items-center justify-content-center"> 
+            <div class="banner-content col-lg-12">
+              <h1 class="text-white" style="color: black !important">
+                Latest jobs from employers and job boards				
+              </h1>	
+              <form (ngSubmit)="moveToSearch()"  class="serach-form-ara" style="margin-top: 20px;border: 1px solid gray;padding: 20px;border-radius: 10px;">
+                <div class="row justify-content-center">
+                  <div class="col-lg-4 form-cols">
+                    <input [(ngModel)]="searchQuery" type="text" class="form-control" name="seah" placeholder="What are you looking for?">
+                  </div>
+                  <div class="col-lg-4 form-cols">
+                      <input [(ngModel)]="state" type="text" class="form-control" name="search" placeholder="What state are you searching?">
+                  </div>
+                  <div class="col-lg-2 form-cols">
+                      <button type="submit" class="btn btn-info">
+                        <span class="lnr lnr-magnifier"></span> Search
+                      </button>
+                  </div>								 
+                </div>
+                <div *ngIf="error" style="color: red; text-align: center; margin-top: 15px;">**Please, enter an information in one or both fields above</div>
+              </form>		
+              <!-- <p class="text-white"> <span>Search by tags:</span> Tecnology, Business, Consulting, IT Company, Design, Development</p> -->
+            </div>											
+          </div>
+        </div>
+        </section>
+
+        <!-- <h1 *ngIf="mobile"> HELLO WORLD</h1> -->
+        
+        <section class="container content-section">
+          <div class="card">
+            <div class="card-body">
+              <h3 style="text-align: center; margin-bottom: 20px;">Browse Jobs</h3>
+              <hr>
+              <div class="container-fluid" style="height: 50%; margin-top: 20px;">
+                <!-- Big Screen -->
+                <div *ngIf="bigScreen" class="row">
+                    <div class="col-lg-6 col-sm-12 bordering">
+                      <p style="font-weight: 600; text-align: center; margin-bottom: 30px;"><u style="color: black !important">Categories</u></p>
+                      <div class="categories" style="display: flex;flex-direction:column;flex-wrap: wrap">
+                        <p (click)="searchCategory(category)" *ngFor="let category of categories" style="cursor: pointer;">{{category}}</p>
+                      </div>
+                    </div>
+                 
+                    <div class="col-lg-6 col-sm-12 locate">
+                      <p style="font-weight: 600; text-align: center; margin-bottom: 30px;"><u style="color: black !important">Locations</u></p>
+                      <div class="sta" style="display: flex;flex-direction:column;flex-wrap: wrap">
+                        <p (click)="searchState(state)" class="states" *ngFor="let state of states" style="cursor: pointer;">{{state}}</p>
+                      </div>
+                    </div>
+                </div>
+
+                <!-- Small Screen -->
+                <div *ngIf="smallScreen" class="row">
+                  <div class="col-lg-6 col-sm-12 bordering" style="text-align: center">
+                    <p style="font-weight: 600; text-align: center; margin-bottom: 30px;"><u style="color: black !important">Categories</u></p>
+                    <ul>
+                      <li *ngFor="let category of categories |slice:0:slic2"><a style="padding:0px;" (click)="searchCategory(category)"><p>{{category}}</p></a></li>
+                    </ul>
+                    <p *ngIf="!less2" class="text-ceter" (click)="showmoreCat()" style="padding-top:10px;cursor:pointer;">Show More + </p>
+                    <p *ngIf="less2" class="text-centr" (click)="showmoreCat()" style="padding-top:10px;cursor:pointer;">Show Less - </p>
+                  </div>
+
+                  <div class="col-lg-6 col-sm-12 locate" style="text-align: center;">
+                    <p style="font-weight: 600; text-align: center; margin-bottom: 30px;"><u style="color: black !important">Locations</u></p>
+                    <ul class="cat-lis">
+                      <li *ngFor="let state of states |slice:0:slic"><a style="padding:0px;" (click)="searchState(state)"><p>{{state}}</p></a></li>
+                    </ul>
+                    <p *ngIf="!less" class="text-ceter" (click)="showmore()" style="padding-top:10px;cursor:pointer;">Show More + </p>
+                    <p *ngIf="less" class="text-centr" (click)="showmore()" style="padding-top:10px;cursor:pointer;">Show Less - </p><br>
+                  </div>
+                </div>
+            </div>
+            </div>
+          </div>
+        </section>
+
+        <div style="display: none;">
+          <button type="button" id="resetButton" data-toggle="modal" data-target="#resetModal"></button>
+        </div>
+
+        <!-- Reset Modal -->
+        <div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-labelledby="resetModal" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header" style="border-bottom: 0 none;padding-bottom: 0px;">
+                <h6 class="modal-title"> Reset Your Password </h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+              <div style="margin: 0px 10px;">
+                <hr>
+              </div>
+
+              <div class="modal-body" style="padding-top: 0px !important;">
+                <form (ngSubmit)="resetPassword()" [formGroup]="resetPass">
+
+                  <div class="form-group">
+                    <label for="password3">Password</label>
+                    <input id="password3" formControlName="password" (focus)="onFocus()" name="password" type="password" class="form-control" placeholder="Password"
+                      [ngClass]="{'is-invalid': submittedF && ff.password.errors}" required>
+                    <div *ngIf="submittedF && ff.password.errors" class="invalid-feedback">
+                      <div *ngIf="ff.password.errors.minlength">Password must be at least 8 characters</div>
+                      <div *ngIf="ff.password.errors.required">Password is required</div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="confirm">Confirm Password</label>
+                    <input name="confirm_password" id="confirm" (focus)="onFocus()" formControlName="confirm_password" type="password" class="form-control" placeholder="Confirm Password"
+                      [ngClass]="{'is-invalid': submittedF && ff.confirm_password.errors}" required>
+                    <div *ngIf="submittedF && ff.confirm_password.errors" class="invalid-feedback">
+                      <div *ngIf="ff.confirm_password.errors.minlength">Confirm password must be at least 8 characters</div>
+                      <div *ngIf="ff.confirm_password.errors.required">Confirm password is required</div>
+                    </div>
+                  </div>
+
+                  <div style="margin-top: 10px;" *ngIf="notSame" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Failed!</strong> Please make sure the passwords match
+                    <button id="closeAlert" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+
+                  <div style="display: none;">
+                    <button type="button" id="dismiss-firsts" data-dismiss="modal"></button>
+                  </div>
+
+                  <button type="submit" style="float: right;" class="btn btn-info text-center">Reset Password</button>
+                  
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: none;">
+          <button type="button" id="second-modals" data-toggle="modal" data-target="#resetpassword"></button>
+        </div>
+
+        <div class="modal fade" id="resetpassword" tabindex="-1" role="dialog" aria-labelledby="resetpassword" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header" style="border-bottom: 0 none;padding-bottom: 0px;">
+                <h6 class="modal-title" *ngIf="goodResponse"> Successful </h6>
+                <h6 class="modal-title" *ngIf="badResponse"> Error </h6>
+                <button type="button" (click)="refresh()" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+              <div style="margin: 0px 10px;">
+                <hr>
+              </div>
+
+              <div class="modal-body">
+                <div *ngIf="goodResponse" class="alert alert-success" role="alert">
+                  Your password has been successfully changed
+                </div>
+                <div *ngIf="badResponse" class="alert alert-danger" role="alert">
+                  Unable to change passwords, please try again later
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <section class="container job-alert" style="margin-top: 40px;margin-bottom: 40px; text-align: center;">
+            <h3 class="text-center" style="display: inline-flex; padding-top: 50px;">Subscribe to job alerts</h3>
+            <button data-toggle="modal" data-target="#subscribe" type="button" class="btn btn-primary" style="display: inline-flex; color: white; background-color: black; margin-left: 15px;">Subscribe</button>
+        </section>
+
+        <!-- Subscribe Modal -->
+        <div class="modal fade" id="subscribe" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="margin-top: 10px;">Job Alerts</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+
+                <div *ngIf="success" class="alert alert-success alert-dismissible fade show adjust alerting" role="alert">
+                  <h4 class="alert-heading">Successfully Subscribed</h4>
+                  <hr>
+                  <button type="button" class="close" data-dismiss="alert modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+
+                <div *ngIf="failed" class="alert alert-danger alert-dismissible fade show adjust alerting" role="alert">
+                  <h4 class="alert-heading">Subscription Failed</h4>
+                  <p>Please ensure that you're logged in</p>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+
+                <form [formGroup]="subscribe" (ngSubmit)="alertme()">
+                  <div class="login form-group">
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <img src="assets/icons/new_job.png" alt="" style="margin-right: 8px;">
+                          Title
+                        </span>
+                      </div>
+                      <input name="title" formControlName="title" type="text" class="form-control" placeholder="Job Title"
+                        [ngClass]="{'is-invalid': submitted && f.title.errors}" required>
+                      <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
+                        <div *ngIf="f.title.errors">This field is required</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="login">
+                    <div class="input-group mb-3">
+                      <input name="location" formControlName="location" type="text" class="form-control" placeholder="Location"
+                        [ngClass]="{'is-invalid': submitted && f.location.errors}" required>
+                      <div class="input-group-append">
+                        <span class="input-group-text">
+                          <img src="assets/icons/locationss.png" alt="" style="margin-right: 8px;">
+                          Location
+                        </span>
+                      </div>
+                      <div *ngIf="f.location.errors && submitted" class="invalid-feedback">
+                        <div *ngIf="f.location.errors">This field is required</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" style="color: white; background-color: black;">
+                      <span *ngIf="spin" class="fa fa-spin fa-spinner"></span>
+                      Subcribe
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <footer class="footer-area" style="padding-top: 0px; background-color: white; padding-bottom: 1%;">
+        <hr style="margin: 0px !important;">
+        <div class="container-fluid">
+          <div class="row" style="margin-top: 10px;">
+            <div class="col-lg-6 col-md-12">
+              <ul style="list-style-type: none;">
+                <li class="footer-link" [routerLink]="['/about']" routerLinkActive="router-link-active" style="color: black; font-weight: 600; display: inline-flex; margin-left: 25px;">About
+                  Us</li>
+                <li class="footer-link" [routerLink]="['/contact']" routerLinkActive="router-link-active" style="color: black; font-weight: 600; display: inline-flex; margin-left: 25px;">Contact Us</li>
+                <li class="footer-link" [routerLink]="['/terms']" routerLinkActive="router-link-active" style="color: black; font-weight: 600; display: inline-flex; margin-left: 25px;">Terms & Conditions</li>
+                <li class="footer-link" [routerLink]="['/privacy']" routerLinkActive="router-link-active" style="color: black; font-weight: 600; display: inline-flex; margin-left: 25px;">Privacy</li>
+                <li class="footer-link" style="color: black; font-weight: 600; display: inline-flex; margin-left: 25px;">Blog</li>
+              </ul>
+            </div>
+            
+            <!-- <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="single-footer-widget newsletter">
+                <h6>Your Recent Searches</h6>
+                <ul class="footer-nav">
+                  <li *ngFor="let recent of searchItems"><a href="#">{{recent}}</a></li>
+                </ul>	<br>
+                <button type="button" class="btn btn-outline-secondary" style="color: white !important" (click)="clearSearch()">Clear</button> 
+              </div>
+            </div> -->
+
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="single-footer-widget" style="float: right; margin-top: 8px;">
+                <img class="img-responsive footer-img" style="width: 150px; margin-right: 20px; cursor: pointer" src="assets/img/googleplay.png" alt="">
+                <img class="img-responsive footer-img" style="width: 150px; margin-right: 20px; cursor: pointer" src="assets/img/appstores.png" alt="">
+                <a href="http://www.twitter.com/TootavC" target="_blank">
+                  <img class="img-responsive twitter" style="margin-right: 30px; cursor: pointer" src="assets/icons/twitter.png"
+                    alt="">
+                </a>
+              </div>
+            </div>
+          </div>
+        
+          <div class="row d-flex justify-content-between">
+            <p class="col-lg-8 col-sm-12 footer-text m-0 text-white">
+            </p>
+          </div>
+        </div>
+        </footer>
+</div>

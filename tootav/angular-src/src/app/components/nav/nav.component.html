@@ -1,0 +1,242 @@
+<header id="header">
+  <div class="container">
+    <div class="row align-items-center justify-content-between d-flex">
+      <div id="logo">
+        <a routerLink="/home" style="color: black;"><img style="width: 100px;min-height: auto; margin-top: 25%;" src="assets/img/TOOTAV1.jpg" alt=""></a>
+      </div>
+      <nav id="">
+          <ul class="nav justify-content-end">
+
+              <div style="display: inline-flex;" *ngIf="showSign">
+                <li  *ngIf="!loggedIn" class="nav-item">
+                  <a style="cursor: pointer" data-toggle="modal" data-target="#signupModal" class="nav-link" >Sign Up</a>
+                </li>
+                <li  *ngIf="!loggedIn" class="nav-item">
+                  <a style="cursor: pointer" data-toggle="modal" data-target="#loginModal" class="nav-link" >Log in</a>
+                </li>
+              </div>
+              <div class="menu-btn" style="display: none" *ngIf="!showSign">
+                <button class="btn btn-primary returnMenu" style="margin-right: 10px; background-color: black">
+                  <img src="assets/icons/menu.png" alt="">
+                </button>
+              </div>
+              <li  *ngIf="loggedIn" class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{name}}</a>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" routerLink="/favourites">Favourites</a>
+                    <a class="dropdown-item" href="#">search</a>
+                    <a class="dropdown-item" [routerLink]="['/add-jobs']" routerLinkActive="router-link-active">Add jobs</a>
+                    <a class="dropdown-item" (click)="logout()">Logout</a>
+                  </div>
+                </li>
+            </ul>
+        <ul class="nav-menu">
+        
+        </ul>
+      </nav><!-- #nav-menu-container -->
+    </div>
+  </div>
+</header><!-- #header -->
+
+
+<div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="border-bottom: 0 none;padding-bottom: 0px;">
+        <h6 class="modal-title" id="exampleModalLabel"> Create an Tootav account: </h6>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="signUpForm" (ngSubmit)="signupUser()">
+          
+          <div class="form-group">
+            <label for="email1">Email address</label>
+            <input formControlName="email" name="email1" type="email" class="form-control" id="email1"
+              aria-describedby="" placeholder="Enter Email" [ngClass]="{'is-invalid': submittedSign && fs.email.errors}" required>
+            <small  class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <div *ngIf="submittedSign && fs.email.errors" class="invalid-feedback">
+              <div *ngIf="fs.email.errors.email">Email must be a valid email address</div>
+              <div *ngIf="fs.email.errors.required">Email is required</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="name">Fullname</label>
+            <input formControlName="fullname" id="name" name="fullname" type="text" class="form-control" [ngClass]="{'is-invalid': submittedSign && fs.fullname.errors}" placeholder="Enter Fullname" required>
+            <div *ngIf="submittedSign && fs.fullname.errors" class="invalid-feedback">
+              <div *ngIf="fs.fullname.errors">Fullname is required</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password1">Password</label>
+            <input id="password1" name="password" formControlName="password" type="password" class="form-control" 
+              placeholder="Password" [ngClass]="{'is-invalid': submittedSign && fs.password.errors}" required>
+            <div *ngIf="submittedSign && fs.password.errors" class="invalid-feedback">
+              <div *ngIf="fs.password.errors.minlength">Password must be at least 8 characters</div>
+              <div *ngIf="fs.password.errors.required">Password is required</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password2">Confirm Password</label>
+            <input name="confirm_password" formControlName="confirm_password" type="password" class="form-control" 
+              placeholder="Confirm Password" [ngClass]="{'is-invalid': submittedSign && fs.confirm_password.errors}" required>
+            <div *ngIf="submittedSign && fs.confirm_password.errors" class="invalid-feedback">
+              <div *ngIf="fs.confirm_password.errors.minlength">Confirm password must be at least 8 characters</div>
+              <div *ngIf="fs.confirm_password.errors.required">Confirm password is required</div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-info text-center">Sign Up</button>
+        </form>
+
+        <!-- Alert -->
+        <div style="margin-top: 10px;" *ngIf="signupError" class="alert alert-danger alert-dismissible fade show" role="alert">
+          <strong>Signup Failed!</strong> User already exists!
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div style="margin-top: 10px;" *ngIf="conflict" class="alert alert-danger alert-dismissible fade show" role="alert">
+          <strong>Signup Failed!</strong> User already exists!
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div style="margin-top: 10px;" *ngIf="confirmationError" class="alert alert-danger alert-dismissible fade show" role="alert">
+          <strong>Signup Failed!</strong> Please make sure the passwords match
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="border-bottom: 0 none;padding-bottom: 0px;">
+        <h6 class="modal-title"> Login into your Tootav account: </h6>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="logInForm" (ngSubmit)="loginUser()">
+
+          <div class="form-group">
+            <label for="email2">Email address</label>
+            <input id="email2" formControlName="email" name="email2" type="email" class="form-control" placeholder="Enter Email" [ngClass]="{'is-invalid': submittedLog && fl.email.errors}" required>
+            <small class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <div *ngIf="submittedLog && fl.email.errors" class="invalid-feedback">
+              <div *ngIf="fl.email.errors.email">Email must be a valid email address</div>
+              <div *ngIf="fl.email.errors.required">Email is required</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password2">Password</label>
+            <input id="password2" formControlName="password" name="password2" type="password" class="form-control" placeholder="Password" [ngClass]="{'is-invalid': submittedLog && fl.password.errors}" required>
+            <small (click)="forgotPass()" class="form-text text-muted" style="cursor: pointer; float: right;">
+              Forgot your password?
+            </small>
+            <div *ngIf="submittedLog && fl.password.errors" class="invalid-feedback">
+              <div *ngIf="fl.password.errors.minlength">Password must be at least 8 characters</div>
+              <div *ngIf="fl.password.errors.required">Password is required</div>
+            </div>
+          </div>
+
+          <button style="margin-top: 15px;" type="submit" class="btn btn-info text-center">Login</button>
+        </form>
+
+        <div style="display: none;">
+          <button type="button" id="dismiss-first" data-dismiss="modal"></button>
+        </div>
+
+        <!-- Alert -->
+        <div style="margin-top: 10px;" *ngIf="logginError" class="alert alert-danger alert-dismissible fade show" role="alert">
+          <strong>Login Failed!</strong> Please enter the correct email and password
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="display: none;">
+  <button type="button" id="second-modal" data-toggle="modal" data-target="#enterEmail"></button>
+</div>
+
+<div class="modal fade" id="enterEmail" tabindex="-1" role="dialog" aria-labelledby="enterEmail" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="border-bottom: 0 none;padding-bottom: 0px;">
+        <h6 class="modal-title"> Enter Your Email Address </h6>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div style="margin: 0px 10px;">
+        <hr>
+      </div>
+
+      <div class="modal-body">
+        <form (ngSubmit)="sendEmail()" [formGroup]="forgotPassword">
+
+          <div class="form-group">
+            <label for="email3">Email address</label>
+            <input id="email3" (focus)="onFocus()" formControlName="email" name="email3" type="email" class="form-control" placeholder="Enter Email" [ngClass]="{'is-invalid': submittedForgot && ff.email.errors}" required>
+            <div *ngIf="submittedForgot && ff.email.errors" class="invalid-feedback">
+              <div *ngIf="ff.email.errors.email">Email must be a valid email address</div>
+              <div *ngIf="ff.email.errors.required">Email is required</div>
+            </div>
+          </div>
+
+          <button style="margin-top: 15px; float: right;" type="submit" class="btn btn-info text-center">Verify Email Address</button>
+
+          <div style="display: none;">
+            <button type="button" id="dismiss-second" data-dismiss="modal"></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="display: none;">
+  <button type="button" id="third-modal" data-toggle="modal" data-target="#notifyEmail"></button>
+</div>
+
+<div class="modal fade" id="notifyEmail" tabindex="-1" role="dialog" aria-labelledby="notifyEmail" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="border-bottom: 0 none;padding-bottom: 0px;">
+        <h6 class="modal-title"> Notification </h6>
+        <button type="button" (click)="refresh()" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div style="margin: 0px 10px;">
+        <hr>
+      </div>
+
+      <div class="modal-body">
+        <div *ngIf="goodResponse"  class="alert alert-success" role="alert">
+          A verification email has been sent, please check to proceed
+        </div>
+        <div *ngIf="badResponse"  class="alert alert-danger" role="alert">
+          We can't find a user with this email address, please a sign up
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

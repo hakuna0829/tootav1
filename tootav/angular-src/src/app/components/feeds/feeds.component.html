@@ -1,0 +1,272 @@
+<div class="contain" style="display:list-item;">
+  <br>
+
+  <div *ngIf="spinning_feed" style="text-align: center;">
+    <span class="fa fa-spin fa-spinner" style="font-size: 100px"></span>
+  </div>
+  <div style="margin-top: 30px;">
+    <h3 style="font-weight: 700; display: inline">All Feeds</h3>
+    <span style="float: right;">
+      <button [routerLink]="['/cheesecake/dashboard/add-feed']" routerLinkActive="router-link-active" class="btn btn-primary"
+        type="button" style="color: white; background-color: black; display: inline;">Add Feed</button>
+    </span>
+  </div>
+
+  <!-- Approval Modal -->
+  <div class="modal fade" id="approvalModal" tabindex="-1" role="dialog" aria-labelledby="approvalModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Approval Form</h5>
+          <button type="button" (click)="reload()" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <form *ngIf="showValidation" [formGroup]="approvalForm" (ngSubmit)="toggleApproval(currentId)">
+          <div class="modal-body">
+
+            <div class="input-group mb-3">
+              <input name="feedback_url" formControlName="feedback_url" type="text" class="form-control"
+                [ngClass]="{'is-invalid': submitted && f.feedback_url.errors}" required>
+              <div class="input-group-append">
+                <span class="input-group-text">
+                  Feed Url
+                </span>
+              </div>
+              <div *ngIf="f.feedback_url.errors && submitted" class="invalid-feedback">
+                <div *ngIf="f.feedback_url.errors">This field is required</div>
+              </div>
+            </div>
+
+            <div class="input-group mb-3">
+              <input name="expiry" formControlName="expiry" type="date" class="form-control"
+                [ngClass]="{'is-invalid': submitted && f.expiry.errors}" required>
+              <div class="input-group-append">
+                <span class="input-group-text">
+                  Expiry Date
+                </span>
+              </div>
+              <div *ngIf="f.expiry.errors && submitted" class="invalid-feedback">
+                <div *ngIf="f.expiry.errors">This field is required</div>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <div *ngIf="!success" >
+              <button *ngIf="!spinapprove" type="submit" class="btn" style="background-color: black; color: white;">
+                Approve Feed
+              </button>
+              <button *ngIf="spinapprove" type="submit" class="btn" style="background-color: black; color: white;" disabled>
+                <span class="fa fa-spin fa-spinner" style="margin-right: 5%;"></span>
+                Approve Feed
+              </button>
+            </div>
+
+            <div *ngIf="success" class="alert alert-success alert-dismissible fade show adjust alerting" role="alert">
+              <h4 class="alert-heading">Successfully approved feed</h4>
+              <p>Click on the close botton to dismiss</p>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="reload()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <form *ngIf="!showValidation" (ngSubmit)="toggleApproval(currentId)">
+          <div class="modal-body">
+
+            <div *ngIf="currentFeedback !== ''" >
+              <div class="input-group mb-3">
+                <input name="feed_url" [(ngModel)]="currentFeedback" type="text" class="form-control">
+                <div class="input-group-append">
+                  <span class="input-group-text">Feed Url</span>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="currentFeedback !== ''" >
+              <div class="input-group mb-3">
+                <input name="feed_url" [(ngModel)]="expiry" type="date" class="form-control">
+                <div class="input-group-append">
+                  <span class="input-group-text">Expiry Date</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+
+            <div *ngIf="!success" >
+              <button *ngIf="!spinapprove" type="submit" class="btn" style="background-color: black; color: white;">
+                Approve Feed
+              </button>
+  
+              <button *ngIf="spinapprove" type="submit" class="btn" style="background-color: black; color: white;" disabled>
+                <span class="fa fa-spin fa-spinner" style="margin-right: 5%;"></span>
+                Approve Feed
+              </button>
+            </div>
+
+            <div *ngIf="success" class="alert alert-success alert-dismissible fade show adjust alerting" role="alert">
+              <h4 class="alert-heading">Successfully approved feed</h4>
+              <p>Click on the close botton to dismiss</p>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="reload()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top: 30px;">
+
+    <div class="card shadow" style="width: 100%;">
+      <div style="padding: 2%">
+
+        <div class="input-group mb-3">
+          <input type="text" [(ngModel)]="searchFeeds" class="form-control" placeholder="Search for feeds based on company name, email, feed url or website"
+            aria-label="Feed Search" aria-describedby="basic-addon2">
+          <div class="input-group-append">
+            <span class="input-group-text" id="basic-addon2">
+              <img src="assets/icons/search.png">
+            </span>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr class="d-flex">
+                <th class="col-2">Company Name</th>
+                <th class="col-2">Email</th>
+                <th class="col-3">Feed Url</th>
+                <th class="col-2">Website</th>
+                <th class="col-3">Activity</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="d-flex" *ngFor="let item of allFeeds | filter: searchFeeds | paginate: { itemsPerPage: 15, currentPage: p }">
+                <td class="col-2">{{item.company}}</td>
+                <td class="col-2">{{item.email}}</td>
+                <td class="col-3">{{item.feed_url}}</td>
+                <td class="col-2">{{item.website}}</td>
+                <td class="col-3" style="cursor: pointer;">
+
+                  <span class="row">
+                    <span *ngIf="!item.spin_delete" (click)="delete(item.id)" class="col-1">
+                      <img src="assets/icons/red.png" alt="" class="img-responsive" width="20px;">
+                    </span>
+                    <span *ngIf="!item.spin_delete" (click)="delete(item.id)" class="col table-adjust">
+                      <span>Delete</span>
+                    </span>
+                    <span *ngIf="!item.spin_delete" (click)="editter(item.id)" class="col-1">
+                      <img src="assets/icons/edit.png" alt="" class="img-responsive" width="20px;">
+                    </span>
+                    <span *ngIf="!item.spin_delete" (click)="editter(item.id)" class="col table-adjust">
+                      <span>Edit</span>
+                    </span>
+                    <span *ngIf="item.spin_delete" class="fa fa-spin fa-spinner"></span>
+                  </span>
+
+                  <span class="row" style="margin-top: 5%">
+
+                    <span *ngIf="item.approved === 1" >
+                      <span *ngIf="!item.process" (click)="toggleApproval(item.id)" class="col-1">
+                        <img src="assets/icons/disapprove.png" alt="" class="img-responsive" width="20px;">
+                      </span>
+                      <span *ngIf="!item.process" (click)="toggleApproval(item.id)" class="col-5 table-adjust">
+                        <span>Disapprove</span>
+                      </span>
+                    </span>
+
+                    <span *ngIf="item.approved !== 1" >
+                      <span *ngIf="!item.process" (click)="toggleApproval(item.id)" class="col-1">
+                        <img src="assets/icons/approve.png" alt="" class="img-responsive" width="20px;">
+                      </span>
+                      <span *ngIf="!item.process" id="approve" data-toggle="modal" data-target="#approvalModal" (click)="approval(item.id)"  class="col table-adjust">
+                        <span>Approve</span>
+                      </span>
+                    </span>
+                    <span *ngIf="item.process" class="fa fa-spin fa-spinner"></span>
+                  </span>
+
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="text-align: center">
+            <pagination-controls class="my-pagination" (pageChange)="p = $event" responsive="true"></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="edit">
+    <div style="margin-top: 30px;">
+      <h3 style="font-weight: 700; display: inline">Edit Job</h3>
+      <div class="jumbotron adjust" style="border-radius: 0px; border: none; box-shadow: 0 2px 8px 0 grey; margin-top: 30px;">
+        <form (ngSubmit)="update()" style="padding: 45px 25px;">
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Name</span>
+            </div>
+            <input name="name" [(ngModel)]="e_name" type="text" class="form-control">
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Email Address</span>
+            </div>
+            <input name="email" [(ngModel)]="e_email" type="email" class="form-control">
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Phone Number</span>
+            </div>
+            <input name="phone" (keypress)="keyPress($event)" [(ngModel)]="e_phone" type="tel" class="form-control">
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Company</span>
+            </div>
+            <input name="company" [(ngModel)]="e_company" type="text" class="form-control">
+          </div>
+
+          <div class="input-group mb-3">
+            <input name="website" [(ngModel)]="e_website" type="text" class="form-control">
+            <div class="input-group-append">
+              <label class="input-group-text" for="inputGroupSelect1">Website</label>
+            </div>
+          </div>
+
+          <div class="input-group mb-3">
+            <input name="feed_url" [(ngModel)]="e_feed_url" type="text" class="form-control">
+            <div class="input-group-append">
+              <span class="input-group-text">Feed Url</span>
+            </div>
+          </div>
+
+          <!-- <button type="submit" class="btn btn-md" style="width: 100%; margin-bottom: 10px; background-color: #1c262c; color:whitesmoke">Upload Image</button> -->
+          <br>
+          <div style="text-align: center;">
+            <button class="btn btn-md" style="width: 50%; margin-bottom: 10px; background-color: black; color:white">
+              <span *ngIf="spin" class="fa fa-spin fa-spinner" style="margin-right: 5%;"></span>
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+

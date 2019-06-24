@@ -1,0 +1,10 @@
+.table-adjust {
+  margin-top: 5px;
+}
+
+
+@media screen and (max-width: 554px) {
+  .table-adjust {
+    margin-top: 0px;
+  }
+}

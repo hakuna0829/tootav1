@@ -1,0 +1,22 @@
+.adjust {
+  width: 50%;
+}
+
+.alerting {
+  padding-bottom: 5%;
+}
+
+@media screen and (max-width: 980px) {
+  .alerting {
+    padding-bottom: 8%;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .adjust {
+    width: 100%;
+  }
+  .alerting {
+    padding-bottom: 15%;
+  }
+}

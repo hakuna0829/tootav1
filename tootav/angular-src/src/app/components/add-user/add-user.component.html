@@ -1,0 +1,68 @@
+<div class="contain" style="display:list-item;">
+  <br>
+
+  <div *ngIf="success" class="alert alert-success alert-dismissible fade show adjust alerting" role="alert">
+    <h4 class="alert-heading">Successfully added user</h4>
+    <p>Click on the close botton to keep adding users or the button below to view the list of users</p>
+    <hr>
+    <div [routerLink]="['/cheesecake/dashboard']" routerLinkActive="router-link-active">
+      <button class="btn btn-primary" style="color: white; background-color: black; float: right;">View Users</button>
+    </div>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="reloadPage()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+  </div>
+
+  <div style="margin-top: 30px; ">
+    <h3 style="font-weight: 700; margin-top: 30px;">Add User</h3>
+    <div class="jumbotron adjust" style="border-radius: 0px; border: none; box-shadow: 0 2px 8px 0 grey; margin-top: 30px;">
+      <form [formGroup]="registerUsers" (ngSubmit)="addUser()" style="padding: 45px 25px;">
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">User</span>
+          </div>
+          <input type="text" name="firstname" formControlName="firstname" class="form-control" placeholder="First Name" [ngClass]="{'is-invalid': submitted && f.firstname.errors}" required>
+          <input type="text" name="lastname" formControlName="lastname" class="form-control" placeholder="Last Name" [ngClass]="{'is-invalid': submitted && f.lastname.errors}" required>
+          <div *ngIf="(submitted && f.firstname.errors) || (submitted && f.lastname.errors)" class="invalid-feedback">
+            <div *ngIf="f.firstname.errors">Firstname is required</div>
+            <div *ngIf="f.lastname.errors">Lastname is required</div>
+          </div>
+        </div>
+        
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Email</span>
+          </div>
+          <input name="email" formControlName="email" type="text" class="form-control" placeholder="admin@mcinsight.com" [ngClass]="{'is-invalid': submitted && f.email.errors}" required>
+          <div class="invalid-feedback" *ngIf="submitted && f.email.errors">
+            <div *ngIf="f.email.errors.required">Email is required</div>
+            <div *ngIf="f.email.errors.email">Please enter a valid email address</div>
+          </div>
+        </div> 
+
+        <div class="input-group mb-3">
+          <input name="password" formControlName="password" type="password" class="form-control" placeholder="Password" [ngClass]="{'is-invalid': submitted && f.password.errors}" required>
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <img src="assets/icons/key.png" alt="" style="margin-right: 8px;">
+              Password
+            </span>
+          </div>
+          <div class="invalid-feedback" *ngIf="submitted && f.password.errors">
+            <div *ngIf="f.password.errors.required">Password is required</div>
+            <div *ngIf="f.password.errors.minlength">Password must be at least 8 characters long</div>
+          </div>
+        </div>
+        <!-- <button type="submit" class="btn btn-md" style="width: 100%; margin-bottom: 10px; background-color: #1c262c; color:whitesmoke">Upload Image</button> -->
+        <br>
+        <button type="submit" class="btn btn-md" style="width: 100%; margin-bottom: 10px; background-color: black; color:white">
+          <span *ngIf="spin" class="fa fa-spin fa-spinner" style="margin-right: 5%;"></span>
+          Save User
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+

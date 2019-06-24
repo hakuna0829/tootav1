@@ -1,0 +1,98 @@
+<div class="contain" style="display:list-item;">
+  <br>
+
+  <div *ngIf="form_success" class="alert alert-success alert-dismissible fade show adjust alerting" role="alert">
+    <h4 class="alert-heading">Successfully added feed</h4>
+    <p>Click on the close botton to keep adding jobs or the button below to view the list of jobs</p>
+    <hr>
+    <div [routerLink]="['/cheesecake/dashboard/jobs']" routerLinkActive="router-link-active">
+      <button class="btn btn-primary" style="color: white; background-color: black; float: right;">View Jobs</button>
+    </div>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="reloadPage()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+  </div>
+
+  <div style="margin-top: 30px;">
+    <h3 style="font-weight: 700; margin-top: 30px;">Add Feed</h3>
+    <div class="jumbotron adjust" style="border-radius: 0px; border: none; box-shadow: 0 2px 8px 0 grey; margin-top: 30px;">
+      <form [formGroup]="addJob" (ngSubmit)="addJobs()" style="padding: 45px 25px;">
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Fullname</span>
+          </div>
+          <input name="name" formControlName="name" type="text" class="form-control" placeholder=""
+            [ngClass]="{'is-invalid': submitted && f.name.errors}" required>
+          <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+            <div class="f.name.errors">This field is required</div>
+          </div>
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Email</span>
+          </div>
+          <input name="email" formControlName="email" type="email" class="form-control" placeholder="admin@tootav.com" [ngClass]="{'is-invalid': submitted && f.email.errors}"
+            required>
+          <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+            <div class="f.email.errors.required">This field is required</div>
+            <div class="f.email.errors.email">Please enter a valid email address</div>
+          </div>
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Company</span>
+          </div>
+          <input name="company" formControlName="company" type="text" class="form-control" placeholder="Tootav"
+            [ngClass]="{'is-invalid': submitted && f.company.errors}" required>
+          <div class="invalid-feedback" *ngIf="submitted && f.company.errors">
+            <div *ngIf="f.company.errors">This field is required</div>
+          </div>
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Phone Number</span>
+          </div>
+          <input name="phone" (keypress)="keyPress($event)" formControlName="phone" type="tel" class="form-control" placeholder=""
+            [ngClass]="{'is-invalid': submitted && f.phone.errors}" required>
+          <div class="invalid-feedback" *ngIf="submitted && f.phone.errors">
+            <div *ngIf="f.phone.errors">This field is required</div>
+          </div>
+        </div>
+
+        <div class="input-group mb-3">
+          <input name="website" formControlName="website" type="text" class="form-control" placeholder="tootav.com" [ngClass]="{'is-invalid': submitted && f.website.errors}"
+            required>
+          <div class="input-group-append">
+            <span class="input-group-text">Website</span>
+          </div>
+          <div *ngIf="submitted && f.website.errors" class="invalid-feedback">
+            <div class="f.website.errors">This field is required</div>
+          </div>
+        </div>
+
+        <div class="input-group mb-3">
+          <input name="feed_url" formControlName="feed_url" type="text" class="form-control" placeholder="tootav.com" [ngClass]="{'is-invalid': submitted && f.feed_url.errors}"
+            required>
+          <div class="input-group-append">
+            <span class="input-group-text">Feed Url</span>
+          </div>
+          <div *ngIf="submitted && f.feed_url.errors" class="invalid-feedback">
+            <div class="f.feed_url.errors">This field is required</div>
+          </div>
+        </div>
+
+        <!-- <button type="submit" class="btn btn-md" style="width: 100%; margin-bottom: 10px; background-color: #1c262c; color:whitesmoke">Upload Image</button> -->
+        <br>
+        <button class="btn btn-md" style="width: 100%; margin-bottom: 10px; background-color: black; color:white">
+          <span *ngIf="spinning" class="fa fa-spin fa-spinner" style="margin-right: 5%;"></span>
+          Save Feed
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+<div id="sidebar-wrapper" class="sidebar-toggle">
+  <ul class="sidebar-nav">
+    <li>
+      <a class="returnMenu" data-toggle="tooltip" title="Dashboard" [routerLink]="['/cheesecake/dashboard']" routerLinkActive="router-link-active" ><img src="assets/icons/dash.png" alt="" class="icons"></a>
+    </li>
+    <li>
+      <a class="returnMenu" data-toggle="tooltip" title="Add User" [routerLink]="['/cheesecake/dashboard/add-user']" routerLinkActive="router-link-active" ><img src="assets/icons/addusers.png" alt="" class="icons" width="80%;"></a>
+    </li>
+    <li>
+      <a class="returnMenu" data-toggle="tooltip" title="Jobs" [routerLink]="['/cheesecake/dashboard/jobs']" routerLinkActive="router-link-active" ><img src="assets/icons/jobs.png" alt="" class="icons" width="80%;"></a>
+    </li>
+    <li>
+      <a class="returnMenu" data-toggle="tooltip" title="Add Jobs" [routerLink]="['/cheesecake/dashboard/feeds']" routerLinkActive="router-link-active"><img src="assets/icons/icons8-feedly.png" alt="" class="icons" width="80%"></a>
+    </li>
+    <li>
+      <a class="returnMenu" data-toggle="tooltip" title="Settings" [routerLink]="['/cheesecake/dashboard/settings']" routerLinkActive="router-link-active"><img src="assets/icons/setting.png" alt="" class="icons" width="80%"></a>
+    </li>
+    <!-- <li>
+      <a [routerLink]="[ '/dashboard/addCity' ]"><img src="assets/icons/icons8-sorting_answers_filled.png" alt="" class="icons"></a>
+    </li> -->
+    <!-- <li>
+      <a [routerLink]="[ '/dashboard/addStore' ]"><img src="assets/icons/icons8-ingredients.png" alt="" class="icons"></a>
+    </li> -->
+    <!-- <li>
+      <a [routerLink]="[ '/dashboard/drivers' ]"><img src="assets/icons/icons8-mountain_biking_filled.png" alt="" class="icons"></a>
+    </li> -->
+    <footer (click)="logout()" style="cursor: pointer;">
+      <li>
+        <a class="returnMenu logout-btn icons" data-toggle="tooltip" title="Logout"><img src="assets/icons/logout.png" alt=""></a>
+      </li>
+    </footer>
+  </ul>
+</div>
