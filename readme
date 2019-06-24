@@ -1,0 +1,10 @@
+Tootav
+Angular UI Installing and Running Installing 
+•	cd tootav1 
+•	npm install -g @angular/cli 
+•	npm install
+•	cd angular-src 
+•	npm install  
+•	cd ..
+•	npm start
+•	visit localhost:3000
