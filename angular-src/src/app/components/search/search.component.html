@@ -1,0 +1,240 @@
+
+<div *ngIf="jobs">
+    <div class="" style="max-height: 60vh !important; margin-top: 200px;margin-bottom: -40px;" id="top">
+        <!-- <div class="overlay overlay-bg"></div> -->
+        <div class="container">
+          <div class="row fullscreen d-flex align-items-center justify-content-center">
+            <div class="banner-content col-lg-12">
+              <h1 class="text-white" style="color: black !important">
+                Latest jobs from employers and job boards
+              </h1>
+              <form (ngSubmit)="moveToSearch()"  class="serach-form-ara" style="margin-top: 20px;border: 1px solid gray;padding: 20px;border-radius: 10px;">
+                <div class="row justify-content-center">
+                  <div class="col-lg-4 form-cols">
+                    <input [(ngModel)]="searchQuery" type="text" class="form-control" name="seah" placeholder="What are you looking for?">
+                  </div>
+                  <div class="col-lg-4 form-cols">
+                      <input [(ngModel)]="state" type="text" class="form-control" name="search" placeholder="What state are you looking for?">
+                  </div>
+                  <div class="col-lg-2 form-cols">
+                      <button type="submit" class="btn btn-info">
+                        <span class="lnr lnr-magnifier"></span> Search
+                      </button>
+                  </div>
+                </div>
+              </form>
+              <!-- <p class="text-white"> <span>Search by tags:</span> Tecnology, Business, Consulting, IT Company, Design, Development</p> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- End banner Area -->
+
+    <!-- Start post Area -->
+    <section class="post-area section-gap">
+      <div class="container">
+        <div *ngIf="jobsLength !== 0 && searchQuery !== null && state === null" style="text-align: left; margin-bottom: 15px; margin-left: 80px;">
+          <h5>
+            There are {{jobsLength}} results of {{queried}} jobs
+          </h5>
+        </div>
+        <div *ngIf="jobsLength !== 0 && state !== null && searchQuery === null" style="text-align: left; margin-bottom: 15px; margin-left: 80px;">
+          <h5>
+            There are {{jobsLength}} results in {{stated}}
+          </h5>
+        </div>
+        <div *ngIf="jobsLength !== 0 && state !== null && searchQuery !== null" style="text-align: left; margin-bottom: 15px; margin-left: 80px;">
+          <h5>
+            There are {{jobsLength}} results of {{queried}} jobs in {{stated}}
+          </h5>
+        </div>
+        <div class="row justify-content-center d-flex">
+
+          <div class="col-lg-8 post-list card" id="scrollHere">
+            <div *ngIf="jobsLength === 0">
+              <h3 style="text-align: center; padding: 35px 0px;">There are no results for the search query</h3>
+            </div>
+            <div *ngIf="jobsLength !== 0"  style="padding: 40px 0px;">
+              <div *ngFor="let job of jobs | paginate: { itemsPerPage: 20, currentPage: p }" class="single-post d-flex flex-row" style="background-color: white !important;padding: 0px !important;padding-top: 10px;">
+                  <div class="thumb">
+                    <img style="padding: 30px;" class="img-responsive" width="140px" src="assets/img/{{job.source}}.png" alt="">
+                  </div>
+                  <div class="details">
+                    <div class="title d-flex flex-row justify-content-between">
+                      <div class="titles">
+                        <a href="{{ job.url }}" target="_blank"><h4>{{ job.title  }}</h4></a>
+                        <!-- <h6> {{ job.company }} </h6>					 -->
+                      </div>
+                      <ul class="btns" style="cursor: pointer;">
+                        <li><a (click)="favourite(job.id)"><span class="lnr lnr-star"></span></a></li>
+                        <!-- <li><a href="{{ job.url }}" target="_blank">Apply</a></li> -->
+                      </ul>
+                    </div>
+                    <p class="titles">
+                      {{ job.description }}
+                    </p>
+                    <!-- <h5>County: {{ job.county }}</h5> -->
+                    <!-- <h5>State: {{ job.state }}</h5> -->
+                    <p class="address"><span class="lnr lnr-map"></span> {{ job.county }}, {{ job.state }}</p>
+                    <!-- <p class="address"><span class="lnr lnr-database"></span> 15k - 25k</p> -->
+                  </div>
+              </div>
+              <pagination-controls (click)="scroll()" (pageChange)="p = $event"></pagination-controls>
+            </div>
+          </div>
+          <div class="col-lg-2 sidebar">
+            <div class="single-sliebar">
+              <h4>Location</h4><br>
+              <ul class="cat-lis" style="cursor: pointer;">
+                <li *ngFor="let state of states |slice:0:slic"><a class="justify-content-between d-flex" style="padding:0px;" (click)="searchByLocation(state)"><p>{{state}}</p></a></li>
+              </ul>
+              <p *ngIf="!less" class="text-ceter" (click)="showmore()" style="padding-top:10px;cursor:pointer;">Show More + </p>
+              <p *ngIf="less" class="text-centr" (click)="showmore()" style="padding-top:10px;cursor:pointer;">Show Less - </p><br>
+
+              <h4>Categories</h4><br>
+              <ul class="cat-lis" style="cursor: pointer;">
+                <li *ngFor="let category of categories |slice:0:slic2"><a class="justify-content-between d-flex" style="padding:0px;" (click)="searchByCategory(category)"><p>{{category}}</p></a></li>
+              </ul>
+              <p *ngIf="!less2" class="text-ceter" (click)="showmoreCat()" style="padding-top:10px;cursor:pointer;">Show More + </p>
+              <p *ngIf="less2" class="text-centr" (click)="showmoreCat()" style="padding-top:10px;cursor:pointer;">Show Less - </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="container job-alert" style="margin-top: 40px;margin-bottom: 40px; text-align: center;">
+      <h3 class="text-center" style="display: inline-flex; padding-top: 50px;">Subscribe to job alerts</h3>
+      <button data-toggle="modal" data-target="#subscribe" type="button" class="btn btn-primary" style="display: inline-flex; color: white; background-color: black; margin-left: 15px;">Subscribe</button>
+    </section>
+
+    <!-- Subscribe Modal -->
+    <div class="modal fade" id="subscribe" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" style="margin-top: 10px;">Job Alerts</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+            <div *ngIf="success" class="alert alert-success alert-dismissible fade show adjust alerting" role="alert">
+              <h4 class="alert-heading">Successfully Subscribed</h4>
+              <hr>
+              <button type="button" class="close" data-dismiss="alert modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <div *ngIf="failed" class="alert alert-danger alert-dismissible fade show adjust alerting" role="alert">
+              <h4 class="alert-heading">Subscription Failed</h4>
+              <p>Please ensure that you're logged in</p>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <form [formGroup]="subscribe" (ngSubmit)="alertme()">
+              <div class="login form-group">
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <img src="assets/icons/new_job.png" alt="" style="margin-right: 8px;">
+                      Title
+                    </span>
+                  </div>
+                  <input name="title" formControlName="title" type="text" class="form-control" placeholder="Job Title"
+                    [ngClass]="{'is-invalid': submitted && f.title.errors}" required>
+                  <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
+                    <div *ngIf="f.title.errors">This field is required</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="login">
+                <div class="input-group mb-3">
+                  <input name="location" formControlName="location" type="text" class="form-control" placeholder="Location"
+                    [ngClass]="{'is-invalid': submitted && f.location.errors}" required>
+                  <div class="input-group-append">
+                    <span class="input-group-text">
+                      <img src="assets/icons/locationss.png" alt="" style="margin-right: 8px;">
+                      Location
+                    </span>
+                  </div>
+                  <div *ngIf="f.location.errors && submitted" class="invalid-feedback">
+                    <div *ngIf="f.location.errors">This field is required</div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" style="color: white; background-color: black;">
+                  <span *ngIf="spin" class="fa fa-spin fa-spinner"></span>
+                  Subcribe
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- End post Area -->
+
+    <!-- Start callto-action Area -->
+
+    <!-- End calto-action Area -->
+
+    <!-- start footer Area -->
+    <footer class="footer-area" style="padding-top: 0px; background-color: white; padding-bottom: 1%;">
+      <hr style="margin: 0px !important;">
+      <div class="container-fluid">
+        <div class="row" style="margin-top: 10px;">
+          <div class="col-lg-6 col-md-12">
+            <ul style="list-style-type: none;">
+              <li class="footer-link" [routerLink]="['/about']" routerLinkActive="router-link-active" style="color: black; font-weight: 600; display: inline-flex; margin-left: 25px;">About
+                Us</li>
+              <li class="footer-link" [routerLink]="['/contact']" routerLinkActive="router-link-active" style="color: black; font-weight: 600; display: inline-flex; margin-left: 25px;">Contact
+                Us</li>
+              <li class="footer-link" [routerLink]="['/terms']" routerLinkActive="router-link-active" style="color: black; font-weight: 600; display: inline-flex; margin-left: 25px;">Terms
+                & Conditions</li>
+              <li class="footer-link" [routerLink]="['/privacy']" routerLinkActive="router-link-active" style="color: black; font-weight: 600; display: inline-flex; margin-left: 25px;">Privacy</li>
+              <li class="footer-link" style="color: black; font-weight: 600; display: inline-flex; margin-left: 25px;">Blog</li>
+            </ul>
+          </div>
+
+          <!-- <div class="col-lg-6 col-md-6 col-sm-12">
+                  <div class="single-footer-widget newsletter">
+                    <h6>Your Recent Searches</h6>
+                    <ul class="footer-nav">
+                      <li *ngFor="let recent of searchItems"><a href="#">{{recent}}</a></li>
+                    </ul>	<br>
+                    <button type="button" class="btn btn-outline-secondary" style="color: white !important" (click)="clearSearch()">Clear</button>
+                  </div>
+                </div> -->
+
+          <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="single-footer-widget" style="float: right; margin-top: 8px;">
+              <img class="img-responsive footer-img" style="width: 150px; margin-right: 20px; cursor: pointer" src="assets/img/googleplay.png"
+                alt="">
+              <img class="img-responsive footer-img" style="width: 150px; margin-right: 20px; cursor: pointer" src="assets/img/appstores.png"
+                alt="">
+              <a href="http://www.twitter.com/TootavC" target="_blank">
+                <img class="img-responsive twitter" style="margin-right: 30px; cursor: pointer" src="assets/icons/twitter.png"
+                  alt="">
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="row d-flex justify-content-between">
+          <p class="col-lg-8 col-sm-12 footer-text m-0 text-white">
+          </p>
+        </div>
+      </div>
+    </footer>
+
+</div>

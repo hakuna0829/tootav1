@@ -1,0 +1,126 @@
+<div class="container" style="margin-top: 120px; margin-bottom: 80px;">
+  <div class="card">
+    <div class="card-body">
+
+      <h4>Add Jobs to Tootav</h4>
+
+      <div>
+        <h6 style="margin-top: 2%;">Overview</h6>
+        <ul style="list-style-type: square; margin-top: 1%; margin-left: 5%;">
+          <li>Inclusion on Juju requires a sponsored job campaign</li>
+          <li>All advertising is Cost Per Click basis with no contract requirement</li>
+          <li>We accept bulk job uploads from employees, staffing firm and job boards</li>
+          <li>Sponsored jobs will also be included in our email job alert and partner network</li>
+        </ul>
+      </div>
+
+      <div>
+        <h6 style="margin-top: 2%;">Quality Guidelines</h6>
+        <ul style="list-style-type: square; margin-top: 1%; margin-left: 5%;">
+          <li>Inclusion on Juju requires a sponsored job campaign</li>
+          <li>All advertising is Cost Per Click basis with no contract requirement</li>
+          <li>We accept bulk job uploads from employees, staffing firm and job boards</li>
+          <li>We accept bulk job uploads from employees, staffing firm and job boards</li>
+          <li>Sponsored jobs will also be included in our email job alert and partner network</li>
+          <li>Sponsored jobs will also be included in our email job alert and partner network</li>
+          <li>Sponsored jobs will also be included in our email job alert and partner network</li>
+          <li>Sponsored jobs will also be included in our email job alert and partner network</li>
+        </ul>
+      </div>
+
+      <div>
+        <h6 style="margin-top: 2%;">Add jobs</h6>
+        <p style="margin-top: 1%;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, fugiat quod. Alias perferendis delectus dolore natus quos perspiciatis soluta earum quas harum corporis ut eveniet sint vitae, expedita minus nulla?</p>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 col-sm-12">
+          <form [formGroup]="addJob" (ngSubmit)="addJobs()">
+  
+            <div class="form-group">
+              <input type="text" (focus)="removeAlert()" name="name" formControlName="name" class="form-control"
+                [ngClass]="{'is-invalid': submitted && f.name.errors}" placeholder="Fullname" required>
+              <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                <div *ngIf="f.name.errors">This field is required</div>
+              </div>
+            </div>
+  
+            <div class="form-group">
+              <input type="email" (focus)="removeAlert()" name="email" formControlName="email" class="form-control"
+                [ngClass]="{'is-invalid': submitted && f.email.errors}" placeholder="Email Address" required>
+              <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                <div *ngIf="f.email.errors.required">This field is required</div>
+                <div *ngIf="f.email.errors.email">Please enter a valid email address</div>
+              </div>
+            </div>
+  
+            <div class="form-group">
+              <input type="tel" (keypress)="keyPress($event)" (focus)="removeAlert()" name="phone" formControlName="phone" class="form-control"
+                [ngClass]="{'is-invalid': submitted && f.phone.errors}" placeholder="Phone Number" maxlength="15" required>
+              <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
+                <div *ngIf="f.phone.errors.required">This field is required</div>
+                <div *ngIf="f.phone.errors.minlength">Enter a valid phone number</div>
+              </div>
+            </div>
+  
+            <div class="form-group">
+              <input type="text" (focus)="removeAlert()" name="company" formControlName="company" class="form-control" [ngClass]="{'is-invalid': submitted && f.company.errors}"
+                placeholder="Company" required>
+              <div *ngIf="submitted && f.company.errors" class="invalid-feedback">
+                <div *ngIf="f.company.errors">This field is required</div>
+              </div>
+            </div>
+  
+            <div class="form-group">
+              <input type="text" (focus)="removeAlert()" name="website" formControlName="website" class="form-control" [ngClass]="{'is-invalid': submitted && f.website.errors}"
+                placeholder="Website" required>
+              <div *ngIf="submitted && f.website.errors" class="invalid-feedback">
+                <div *ngIf="f.website.errors">This field is required</div>
+              </div>
+            </div>
+
+            <!-- <image-upload [max]="100" [url]="'example.com/images/upload'" [headers]="{Authorization: 'MyToken'}" [buttonCaption]="'Select Images!'"
+              [dropBoxMessage]="'Drop your images here!'" [extensions]="['jpg','png','gif']" [uploadedFiles]="['http://example.com/path/to/my/file']"
+              [class]="'customClass'" (uploadFinished)="onUploadFinished($event)">
+            </image-upload> -->
+
+            <div class=form-group>
+              <image-upload [class]="'customClass'" (click)="upload()"  [dropBoxMessage]="'Drop image here!'" [buttonCaption]="'Select Image'"
+                [max]="1" [url]="'https://api.imgur.com/3/image'" [headers]="{Authorization: 'Client-ID 37ff737c01775cd'}"
+                (uploadFinished)="onUploadFinished($event)">
+              </image-upload>
+              <div *ngIf="uploadImage" style="color: red;">
+                <div>Please upload an image!</div>
+              </div>
+            </div>
+  
+            <button *ngIf="!submittedSuccess"  style="margin-top: 15px; width: 50%;" type="submit" class="btn btn-info text-center">Submit</button>
+
+            <button *ngIf="submittedSuccess" style="margin-top: 15px; width: 50%;" type="submit" class="btn btn-info" disabled>
+              <span class="fa fa-spin fa-spinner" style="margin-right: 5%;" role="status" aria-hidden="true"></span>
+              Loading
+            </button>
+  
+          </form>
+
+          <div style="margin-top: 5%;" *ngIf="form_error" class="alert alert-danger alert-dismissible fade show"
+            role="alert">
+            <strong>An error occured</strong> An error occured while trying to submit this form, please try again later!
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div style="margin-top: 5%;" *ngIf="form_success" class="alert alert-success alert-dismissible fade show"
+            role="alert">
+            <strong>Success</strong> Your form has been successfully submitted, and we would attend to it as soon as possible!
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,94 @@
+<div class="contain" style="display:list-item;">
+  <br>
+
+  <div *ngIf="success" class="alert alert-success alert-dismissible fade show adjust alerting" role="alert">
+    <h4 class="alert-heading">Successfully added job</h4>
+    <p>Click on the close botton to keep adding jobs or the button below to view the list of jobs</p>
+    <hr>
+    <div [routerLink]="['/cheesecake/dashboard/jobs']" routerLinkActive="router-link-active" >
+      <button class="btn btn-primary" style="color: white; background-color: black; float: right;">View Jobs</button>
+    </div>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="reloadPage()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+  </div>
+
+  <div style="margin-top: 30px; ">
+    <h3 style="font-weight: 700; margin-top: 30px;">Add Job</h3>
+    <div class="jumbotron adjust" style="border-radius: 0px; border: none; box-shadow: 0 2px 8px 0 grey; margin-top: 30px;">
+      <form [formGroup]="jobRegister" (ngSubmit)="addJob()" style="padding: 45px 25px;">
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Job Title</span>
+          </div>
+          <input name="job_title" formControlName="job_title" type="text" class="form-control" placeholder="Engineer" [ngClass]="{'is-invalid': submitted && f.job_title.errors}" required>
+          <div *ngIf="submitted && f.job_title.errors" class="invalid-feedback">
+            <div class="f.job_title.errors">This field is required</div>
+          </div>
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">URL</span>
+          </div>
+          <input name="url" formControlName="url" type="text" class="form-control" placeholder="Engineer" [ngClass]="{'is-invalid': submitted && f.url.errors}" required>
+          <div *ngIf="submitted && f.url.errors" class="invalid-feedback">
+            <div class="f.url.errors">This field is required</div>
+          </div>
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Company</span>
+          </div>
+          <input name="company" formControlName="company" type="text" class="form-control" placeholder="Tootav" [ngClass]="{'is-invalid': submitted && f.company.errors}" required>
+          <div class="invalid-feedback" *ngIf="submitted && f.company.errors">
+            <div *ngIf="f.company.errors">This field is required</div>
+          </div>
+        </div>
+
+        <div class="input-group mb-3">
+          <select name="state" formControlName="state" class="custom-select" [ngClass]="{'is-invalid': submitted && f.state.errors}" id="inputGroupSelect1" required>
+            <option *ngFor="let item of allStates">{{item.name}}</option>
+          </select>
+          <div class="input-group-append">
+            <label class="input-group-text" for="inputGroupSelect1">State</label>
+          </div>
+          <div class="invalid-feedback" *ngIf="submitted && f.state.errors">
+            <div *ngIf="f.state.errors">This field is required</div>
+          </div>
+        </div>
+
+        <div class="input-group mb-3">
+          <input name="county" formControlName="county" type="text" class="form-control" placeholder="County" [ngClass]="{'is-invalid': submitted && f.county.errors}"
+          required>
+          <div class="input-group-append">
+            <span class="input-group-text">County</span>
+          </div>
+          <div *ngIf="submitted && f.county.errors" class="invalid-feedback">
+            <div class="f.county.errors">This field is required</div>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Description</span>
+          </div>
+          <textarea name="description" formControlName="description" class="form-control" aria-label="With textarea" [ngClass]="{'is-invalid': submitted && f.description.errors}"></textarea>
+          <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+              <div class="f.description.errors">This field is required</div>
+          </div>
+        </div>
+
+        <!-- <button type="submit" class="btn btn-md" style="width: 100%; margin-bottom: 10px; background-color: #1c262c; color:whitesmoke">Upload Image</button> -->
+        <br>
+        <button class="btn btn-md" style="width: 100%; margin-bottom: 10px; background-color: black; color:white">
+          <span *ngIf="spin" class="fa fa-spin fa-spinner" style="margin-right: 5%;"></span>
+          Save Job
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

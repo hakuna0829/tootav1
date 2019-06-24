@@ -1,0 +1,295 @@
+/* import local css files */
+@import "./assets/css/linearicons.css";
+@import "./assets/css/font-awesome.min.css";
+@import "./assets/css/bootstrap.css";
+@import "./assets/css/magnific-popup.css";
+@import "./assets/css/nice-select.css";
+@import "./assets/css/animate.min.css";
+@import "./assets/css/owl.carousel.css";
+@import "./assets/css/main.css";
+
+/* You can add global styles to this file, and also import other style files */
+.black-overlay{
+    position: fixed !important;
+}
+
+#sidebar-wrapper {
+  left: 200px;
+  width: 60px;
+  background-color: whitesmoke;
+  position: fixed;
+  height: 100%;
+  z-index: 1;
+  margin-left: -180px;
+}
+
+.sidebar-nav {
+  position: absolute;
+  top: 0;
+  margin: 0;
+  padding: 0;
+  width: 60px;
+  list-style: none;
+}
+
+.sidebar-nav li {
+  text-indent: 10px;
+  line-height: 50px;
+}
+
+.sidebar-nav li a {
+  color: white;
+  display: block;
+  text-decoration: none;
+}
+
+.sidebar-nav li a:hover {
+  background: white;
+  color: white;
+  text-decoration: none;
+}
+
+.sidebar-nav li {
+  text-indent: 5px;
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+  text-decoration: none;
+}
+
+#sidebar-wrapper.sidebar-toggle {
+  transition: all 0.3s ease-out;
+}
+
+/* @media (min-width: 768px) {
+  #sidebar-wrapper.sidebar-toggle {
+    transition: 0s;
+    left: 200px;
+  }
+} */
+.logout-btn {
+  padding-top: 80px !important;
+}
+
+@media (max-width: 768px) {
+  #sidebar-wrapper {
+    transition: all 0.3s ease-in;
+    left: 180px;
+  }
+  #sidebar-wrapper.sidebar-toggle {
+    transition: all 0.3s ease-out;
+    /* transition: 0s; */
+    left: -180px;
+  }
+  .menu-btn {
+    display: inline-flex !important;
+  }
+  .logout-btn {
+    padding-top: 30px !important;
+  }
+  .icons {
+    padding-top: 18px !important;
+  }
+}
+
+.icons {
+  padding-top: 30px;
+  padding-bottom: 8px;
+  padding-left: -38px;
+}
+
+.jumbotron {
+  border: 1px solid #1c262c;
+  border-radius: 8px;
+  background-color: white;
+  margin: 0px;
+  min-height: 80px;
+  height: auto;
+  padding: 0px;
+}
+
+.body {
+  margin: auto;
+  width: 90%;
+}
+
+.top-bar {
+  width: 100%;
+  background-color: #1c262c;
+  height: 40px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  padding-left: 50px;
+  padding-top: 5px;
+  margin: auto;
+  display: inline-flex;
+}
+
+.jumb {
+  background-color: white;
+  max-width: 40%;
+  margin: 10px 0 10px 25px;
+  height: 90px;
+  padding: 0px;
+  box-shadow: 0 2px 8px 0 grey;
+}
+
+th {
+  background-color: #1c262c;
+  color: whitesmoke;
+}
+
+.table-responsive {
+  box-shadow: 0 2px 8px 0 grey;
+}
+
+/* Materialize */
+
+.group {
+  position: relative;
+  margin-bottom: 45px;
+}
+
+input {
+  font-size: 18px;
+  padding: 10px 10px 10px 5px;
+  display: block;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #757575;
+  background-color: white;
+  color: black;
+}
+
+input:focus {
+  outline: none;
+}
+
+label :not(special) :not(customClass) {
+
+  color: #999;
+  font-size: 18px;
+  font-weight: normal;
+  position: absolute;
+  pointer-events: none;
+  left: 5px;
+  top: 10px;
+  transition: 0.2s ease all;
+}
+
+
+/* active state */
+
+input:focus~label,
+input:valid~label {
+  top: -20px;
+  font-size: 14px;
+  color: #00eb63;
+}
+
+.bar {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.bar:before,
+.bar:after {
+  content: '';
+  height: 2px;
+  width: 0;
+  bottom: 1px;
+  position: absolute;
+  background: #00eb63;
+  transition: 0.2s ease all;
+}
+
+.bar:before {
+  left: 50%;
+}
+
+.bar:after {
+  right: 50%;
+}
+
+
+/* active state */
+
+input:focus~.bar:before,
+input:focus~.bar:after {
+  width: 50%;
+}
+
+.highlight {
+  position: absolute;
+  height: 60%;
+  width: 100px;
+  top: 25%;
+  left: 0;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+
+/* active state */
+
+input:focus~.highlight {
+  animation: inputHighlighter 0.3s ease;
+}
+
+
+/* ANIMATIONS ================ */
+
+@keyframes inputHighlighter {
+  from {
+    background: #00eb63;
+  }
+
+  to {
+    width: 0;
+    background: transparent;
+  }
+}
+
+input:focus~label,
+input:valid~label {
+  top: -20px;
+  font-size: 14px;
+  color: #00eb63;
+}
+
+agm-map {
+  height: 700px;
+}
+
+.customClass {
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-left: 0px;
+  margin-top: 0px;
+  width: auto;
+}
+
+.customClass .img-ul-upload {
+  background-color: #1c262c !important;
+  border-radius: 5px;
+}
+
+.customClass .img-ul-clear {
+  background-color: white !important;
+  border: 1px solid #ccc;
+  color: black !important;
+  border-radius: 5px;
+  padding: 9px !important;
+}
+
+.customClass .img-ul-drag-box-msg {
+  color: #ccc !important;
+}
+
+.customClass .img-ul-container {
+  background-color: white !important;
+  border: 1px solid #ccc;
+}

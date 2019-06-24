@@ -1,0 +1,20 @@
+.center-pills {
+  display: flex;
+  justify-content: center;
+}
+
+.nav-pills .nav-link:not(.active) {
+  background-color: #A9A9A9;
+  color: white;
+  border-radius: 0px;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.nav-pills .nav-link {
+  background-color: #000000;
+  color: white;
+  border-radius: 0px;
+  padding-left: 40px;
+  padding-right: 40px;
+}

@@ -1,0 +1,143 @@
+<div class="contain" style="display:list-item;">
+  <br>
+  <div *ngIf="spinning_user && spinning_job" style="text-align: center;">
+    <span class="fa fa-spin fa-spinner" style="font-size: 100px"></span>
+  </div>
+  <div class="row" style="margin-top: 30px;">
+    <div class="col-lg-6 col-xs-12">
+      <div class="jumbotron">
+        <div class="top-bar">
+          <span>
+            <img class="img-responsive" src="assets/icons/stat.png" alt="">
+          </span>
+          <span style="margin-left: 15px; color:whitesmoke; font-size: 18px; margin-top: 3px;">Site statistics</span>
+        </div>
+          <div class="row" style="text-align:center">
+            <div class="jumb col-xs-6 col-md-6">
+              <div class="row">
+                <div class="col-xs-4 col-md-6 col-img-responsive" style="float: left;">
+                  <img class="img-responsive img-respond" src="assets/icons/users.png" alt="" style="margin-top: 0px;">
+                </div>
+                <div class="col-xs-8 col-md-6 col-responsive" style="float: left; text-align: left; margin-top: 10px;">
+                  <p style=" font-size: 14px;">Total Users
+                    <br>
+                    <span *ngIf="spinning_user" class="fa fa-spin fa-spinner"></span>
+                    <span *ngIf="!spinning_user" style="font-weight: bold">{{usersAmount}}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="jumb col-xs-6 col-md-6">
+              <div class="row">
+                <div class="col-xs-4 col-md-6 col-img-responsive" style="float: left;">
+                  <img class="img-responsive img-respond" src="assets/icons/job.png" alt="" style="margin-left: 5px;">
+                </div>
+                <div class="col-xs-8 col-md-6 col-responsive" style="float: left; text-align: left; margin-top: 10px;">
+                  <p style=" font-size: 14px;">Total Jobs
+                    <br>
+                    <span *ngIf="spinning_job" class="fa fa-spin fa-spinner"></span>
+                    <span *ngIf="!spinning_job" style="font-weight: bold">{{jobAmount}}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-xs-12">
+
+      <div class="jumbotron">
+        <div class="top-bar">
+          <span>
+            <img class="img-responsive" src="assets/icons/tool.png" alt="">
+          </span>
+          <span style="margin-left: 15px; color:whitesmoke; font-size: 18px; margin-top: 3px;">Admin Settings</span>
+        </div>
+        <div class="row" style="text-align:center">
+          <div [routerLink]="['/cheesecake/dashboard/feeds']" routerLinkActive="router-link-active" class="jumb col-xs-6 col-md-6" style="cursor: pointer;">
+            <div class="row">
+              <div class="col-xs-4 col-md-6 col-img-responsive" style="float: left;">
+                <img class="img-responsive img-respond" src="assets/icons/icons8-feedly.png" alt="" style="margin-top: 0px;">
+              </div>
+              <div class="col-xs-8 col-md-6 col-responsive" style="float: left; text-align: left; margin-top: 10px;">
+                <p style=" font-size: 14px;">Feeds
+                  <br>
+                  <span *ngIf="spinning_feed" class="fa fa-spin fa-spinner"></span>
+                  <span *ngIf="!spinning_feed" style="font-weight: bold">{{allFeeds}}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div [routerLink]="['/cheesecake/dashboard/settings']" routerLinkActive="router-link-active" class="jumb col-xs-6 col-md-6" style="cursor: pointer;">
+            <div class="row">
+              <div class="col-xs-4 col-md-6 col-img-responsive" style="float: left;">
+                <img class="img-responsive img-respond" src="assets/icons/tweak.png" alt="" style="margin-left: 5px;">
+              </div>
+              <div class="col-xs-8 col-md-6 col-responsive" style="float: left; text-align: left; margin-top: 10px;">
+                <p style=" font-size: 14px;">Change <br class="show" style="display: none;"> Admin <br class="show" style="display: none;"> Password
+                  <!-- <br>
+                  <span style="font-weight: bold">1000</span> -->
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <br>
+
+  <div class="card shadow">
+    <div style="padding: 2%">
+
+      <div class="input-group mb-3">
+        <input type="text" [(ngModel)]="searchUsers" class="form-control" placeholder="Search for users based on name and email"
+          aria-label="User Search" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+          <span class="input-group-text" id="basic-addon2">
+            <img src="assets/icons/search.png">
+          </span>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>User's Name</th>
+              <th>Email Address</th>
+              <th>Lock / Unlock</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of allUsers | filter: searchUsers | paginate: { itemsPerPage: 15, currentPage: p }">
+              <td>{{item.name}}</td>
+              <td>{{item.email}}</td>
+              <td style="cursor: pointer" (click)="changeStatus(item.id)">
+                <span class="row">
+                  <span class="col-md-1 col-xs-1 col-sm-1">
+                    <img src="{{item.status_icon}}" alt="" class="img-responsive">
+                  </span>
+                  <span class="col-md-9 col-xs-9 col-sm-9 table-adjust">
+                    <span>{{item.status}}</span>
+                    <span *ngIf="item.spinning" class="fa fa-spin fa-spinner" style="margin-right: 5px;"></span>
+                  </span>
+                  <!-- <span class="col-md-2 col-xs-2 col-sm-2 table-adjust">
+                  </span> -->
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="text-align: center">
+          <pagination-controls class="my-pagination" (pageChange)="p = $event" responsive="true"></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

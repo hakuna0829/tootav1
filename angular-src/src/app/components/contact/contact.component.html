@@ -1,0 +1,249 @@
+<div>
+  <section class="banner-area relative top-panel" id="home" style="margin-top: 200px;">
+    <div class="container">
+      <div class="row  d-flex align-items-center justify-content-center">
+        <div class="banner-content col-lg-12">
+          <form (ngSubmit)="moveToSearch()"  class="serach-form-ara" style="margin-top: 20px;border: 1px solid gray;padding: 20px;border-radius: 10px;">
+            <div class="row justify-content-center">
+              <div class="col-lg-4 form-cols">
+                <input [(ngModel)]="searchQuery" type="text" class="form-control" name="seah" placeholder="What are you looking for?">
+              </div>
+              <div class="col-lg-4 form-cols">
+                <input [(ngModel)]="state" type="text" class="form-control" name="search" placeholder="What state are you looking for?">
+              </div>
+              <div class="col-lg-2 form-cols">
+                <button type="submit" class="btn btn-info">
+                  <span class="lnr lnr-magnifier"></span> Search
+                </button>
+              </div>
+            </div>
+            <div *ngIf="error" style="color: red; text-align: center; margin-top: 15px;">**Please, enter an information
+              in one or both fields above</div>
+          </form>
+          <!-- <p class="text-white"> <span>Search by tags:</span> Tecnology, Business, Consulting, IT Company, Design, Development</p> -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- <h1 *ngIf="mobile"> HELLO WORLD</h1> -->
+
+  <section class="container content-section" style="margin-bottom: 5%;">
+    <div style="margin-bottom: 5px;">
+      <h1 style="font-weight: lighter;">Contact Us</h1>
+    </div>
+
+    <div style="margin-top: 10px;" *ngIf="successful" class="alert alert-success alert-dismissible fade show adjust alerting" role="alert">
+      <h4 class="alert-heading">Successfully Sent Mail</h4>
+      <hr>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="reloadPage()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="card" style="border-radius: 10px; padding: 2% 5%;">
+      <form [formGroup]="contact" (ngSubmit)="sendContactUs()">
+        <div class="row" style="margin-bottom: 1%;">
+          <div class="col-lg-4 col-sm-12 custom-control custom-radio">
+            <input type="radio" id="customRadio1" (click)="notShow()"  formControlName="purpose" name="purpose" value="Advertise on tootav" class="custom-control-input" required>
+            <label style="color: black !important;" class="custom-control-label" for="customRadio1">Advertise on Tootav</label>
+          </div>
+          <div class="col-lg-8 col-sm-12 custom-control custom-radio">
+            <input type="radio" id="customRadio2" (click)="showFeed()" formControlName="purpose" name="purpose" value="Add jobs feeds to tootave" class="custom-control-input" required>
+            <label style="color: black !important;" class="custom-control-label" for="customRadio2">Add jobs feeds to Tootav</label>
+          </div>
+        </div>
+  
+        <div class="row" style="margin-bottom: 2%;">
+          <div class="col-lg-4 col-sm-12 custom-control custom-radio">
+            <input type="radio" id="customRadio3" (click)="notShow()"  formControlName="purpose" name="purpose" value="Tell us about new job sources" class="custom-control-input" required>
+            <label style="color: black !important;" class="custom-control-label" for="customRadio3">Tell us about new job sources</label>
+          </div>
+          <div class="col-lg-8 col-sm-12 custom-control custom-radio">
+            <input type="radio" id="customRadio4" (click)="notShow()"  formControlName="purpose" name="purpose" value="Others" class="custom-control-input" required>
+            <label style="color: black !important;" class="custom-control-label" for="customRadio4">Any other thing you want us to do</label>
+          </div>
+        </div>
+
+        <div *ngIf="submittedContact && fc.purpose.errors && !feed" style="margin-bottom: 15px;">
+          <div style="color: red">Please select an option above</div>
+        </div>
+
+        <div class="form-group textarea" *ngIf="!feed && !noFeed">
+          <label for="Message">Type message here</label>
+          <textarea class="form-control" name="message" formControlName="message" id="exampleFormControlTextarea1" rows="6" [ngClass]="{'is-invalid': submittedContact && fc.message.errors}" required></textarea>
+          <div *ngIf="submittedContact && fc.message.errors" class="invalid-feedback">
+            <div *ngIf="fc.message.errors.required">This field is required</div>
+            <div *ngIf="fc.message.errors.minlength">Please enter more than 10 words</div>
+          </div>
+        </div>
+
+        <div class="form-group textarea" *ngIf="!feed && !noFeed">
+          <label for="exampleFormControlInput1">Email address</label>
+          <input type="email" class="form-control" id="exampleFormControlInput1" name="email" formControlName="email" [ngClass]="{'is-invalid': submittedContact && fc.email.errors}" placeholder="name@example.com" required>
+          <div *ngIf="submittedContact && fc.email.errors" class="invalid-feedback">
+            <div *ngIf="fc.email.errors.email">Email must be a valid email address</div>
+            <div *ngIf="fc.email.errors.required">Email is required</div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-info" *ngIf="!feed && !noFeed">
+          <span *ngIf="spinContact" class="fa fa-spin fa-spinner"></span>
+          Submit Form
+        </button>
+      </form>
+
+      <form [formGroup]="addJob" (ngSubmit)="addJobs()" *ngIf="feed && !noFeed">
+
+        <div class="form-group textarea">
+          <input type="text" (focus)="removeAlert()" name="name" formControlName="name" class="form-control" [ngClass]="{'is-invalid': submitted && fa.name.errors}"
+            placeholder="Fullname" required>
+          <div *ngIf="submitted && fa.name.errors" class="invalid-feedback">
+            <div *ngIf="fa.name.errors">This field is required</div>
+          </div>
+        </div>
+
+        <div class="form-group textarea">
+          <input type="email" (focus)="removeAlert()" name="email" formControlName="email" class="form-control" [ngClass]="{'is-invalid': submitted && fa.email.errors}"
+            placeholder="Email Address" required>
+          <div *ngIf="submitted && fa.email.errors" class="invalid-feedback">
+            <div *ngIf="fa.email.errors.required">This field is required</div>
+            <div *ngIf="fa.email.errors.email">Please enter a valid email address</div>
+          </div>
+        </div>
+
+        <div class="form-group textarea">
+          <input type="tel" (keypress)="keyPress($event)" (focus)="removeAlert()" name="phone" formControlName="phone" class="form-control"
+            [ngClass]="{'is-invalid': submitted && fa.phone.errors}" placeholder="Phone Number" maxlength="15" required>
+          <div *ngIf="submitted && fa.phone.errors" class="invalid-feedback">
+            <div *ngIf="fa.phone.errors.required">This field is required</div>
+            <div *ngIf="fa.phone.errors.minlength">Enter a valid phone number</div>
+          </div>
+        </div>
+
+        <div class="form-group textarea">
+          <input type="text" (focus)="removeAlert()" name="company" formControlName="company" class="form-control" [ngClass]="{'is-invalid': submitted && fa.company.errors}"
+            placeholder="Company" required>
+          <div *ngIf="submitted && fa.company.errors" class="invalid-feedback">
+            <div *ngIf="fa.company.errors">This field is required</div>
+          </div>
+        </div>
+
+        <div class="form-group textarea">
+          <input type="text" (focus)="removeAlert()" name="website" formControlName="website" class="form-control" [ngClass]="{'is-invalid': submitted && fa.website.errors}"
+            placeholder="Website" required>
+          <div *ngIf="submitted && fa.website.errors" class="invalid-feedback">
+            <div *ngIf="fa.website.errors">This field is required</div>
+          </div>
+        </div>
+
+        <!-- <image-upload [max]="100" [url]="'example.com/images/upload'" [headers]="{Authorization: 'MyToken'}" [buttonCaption]="'Select Images!'"
+                    [dropBoxMessage]="'Drop your images here!'" [extensions]="['jpg','png','gif']" [uploadedFiles]="['http://example.com/path/to/my/file']"
+                    [class]="'customClass'" (uploadFinished)="onUploadFinished($event)">
+                  </image-upload> -->
+
+        <div class="form-group textarea">
+          <image-upload [class]="'customClass'" (click)="upload()" [dropBoxMessage]="'Drop image here!'" [buttonCaption]="'Select Image'"
+            [max]="1" [url]="'https://api.imgur.com/3/image'" [headers]="{Authorization: 'Client-ID 37ff737c01775cd'}"
+            (uploadFinished)="onUploadFinished($event)">
+          </image-upload>
+          <div *ngIf="uploadImage" style="color: red;">
+            <div>Please upload an image!</div>
+          </div>
+        </div>
+
+        <button *ngIf="!submittedSuccess" type="submit" class="btn btn-info text-center">Submit Form</button>
+
+        <button *ngIf="submittedSuccess" type="submit" class="btn btn-info" disabled>
+          <span class="fa fa-spin fa-spinner" style="margin-right: 5%;" role="status" aria-hidden="true"></span>
+          Loading
+        </button>
+
+      </form>
+
+      <div *ngIf="noFeed && !feed">
+        <p style="font-size: large;">
+          Please log in to be able to do this
+        </p>
+      </div>
+
+      <!-- Alert -->
+      <div style="margin-top: 10px;" *ngIf="contactSuccess" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Email Sent!</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <!-- Alert -->
+      <div style="margin-top: 10px;" *ngIf="contactError" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Email Sending!</strong> Please make sure all the fields are filled with the required details
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div style="margin-top: 5%;" *ngIf="form_error" class="text-area alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>An error occured</strong> An error occured while trying to submit this form, please try again later!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div style="margin-top: 5%;" *ngIf="form_success" class="text-area alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success</strong> Your form has been successfully submitted, and we would attend to it as soon as possible!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer-area" style="padding-top: 0px; background-color: white; padding-bottom: 1%;">
+    <hr style="margin: 0px !important;">
+    <div class="container-fluid">
+      <div class="row" style="margin-top: 10px;">
+        <div class="col-lg-6 col-md-12">
+          <ul style="list-style-type: none;">
+            <li class="footer-link" [routerLink]="['/about']" routerLinkActive="router-link-active" style="color: black; font-weight: 600; display: inline-flex; margin-left: 25px;">About
+              Us</li>
+            <li class="footer-link" [routerLink]="['/contact']" routerLinkActive="router-link-active" style="color: black; font-weight: 600; display: inline-flex; margin-left: 25px;">Contact
+              Us</li>
+            <li class="footer-link" [routerLink]="['/terms']" routerLinkActive="router-link-active" style="color: black; font-weight: 600; display: inline-flex; margin-left: 25px;">Terms
+              & Conditions</li>
+            <li class="footer-link" [routerLink]="['/privacy']" routerLinkActive="router-link-active" style="color: black; font-weight: 600; display: inline-flex; margin-left: 25px;">Privacy</li>
+            <li style="color: black; font-weight: 600; display: inline-flex; margin-left: 25px;">Blog</li>
+          </ul>
+        </div>
+
+        <!-- <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="single-footer-widget newsletter">
+                <h6>Your Recent Searches</h6>
+                <ul class="footer-nav">
+                  <li *ngFor="let recent of searchItems"><a href="#">{{recent}}</a></li>
+                </ul>	<br>
+                <button type="button" class="btn btn-outline-secondary" style="color: white !important" (click)="clearSearch()">Clear</button> 
+              </div>
+            </div> -->
+
+        <div class="col-lg-6 col-md-6 col-sm-12">
+          <div class="single-footer-widget" style="float: right; margin-top: 8px;">
+            <img class="img-responsive footer-img" style="width: 150px; margin-right: 20px; cursor: pointer" src="assets/img/googleplay.png"
+              alt="">
+            <img class="img-responsive footer-img" style="width: 150px; margin-right: 20px; cursor: pointer" src="assets/img/appstores.png"
+              alt="">
+              <a href="https://www.twitter.com/TootavC" target="_blank">
+                <img class="img-responsive twitter" style="margin-right: 30px; cursor: pointer" src="assets/icons/twitter.png"
+                  alt="">
+              </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row d-flex justify-content-between">
+        <p class="col-lg-8 col-sm-12 footer-text m-0 text-white">
+        </p>
+      </div>
+    </div>
+  </footer>
+</div>

@@ -1,0 +1,38 @@
+.table-adjust {
+    margin-top: 5px;
+}
+
+
+@media screen and (max-width: 554px) {
+  .table-adjust {
+    margin-top: 0px;
+  }
+
+  .img-respond {
+      float: left !important;
+      width: 50px !important;
+  }
+
+  .col-responsive {
+      width: auto;
+      padding-left: 10px;
+  }
+
+  .col-img-responsive {
+      width: auto;
+      padding-right: 0px;
+  }
+
+  .show {
+      display: initial !important;
+  }
+}
+
+.my-pagination /deep/ .ngx-pagination .current {
+  background: black;
+}
+
+.my-pagination /deep/ .ngx-pagination a:hover,
+.ngx-pagination button:hover {
+  text-decoration: none;
+}
